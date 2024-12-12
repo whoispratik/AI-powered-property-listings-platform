@@ -1,7 +1,10 @@
-<template>Hello {{ counter }}!</template>
+<template>
+    Hello
+    <p>{{ message }}</p>
+</template>
 
 <script setup>
-import { ref } from "vue";
-const counter = ref(0);
-setInterval(() => counter.value++, 1000);
+defineProps({
+    message: "string",
+});
 </script>
