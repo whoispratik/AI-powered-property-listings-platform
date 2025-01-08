@@ -19,16 +19,23 @@
                 >
                     <Link href="/listing">EstateInsight</Link>
                 </div>
-                <div>
+                <div v-if="user" class="flex items-center gap-4">
+                    <div class="text-sm text-gray-500">
+                        Welcome {{ user.name }}
+                    </div>
                     <Link href="/listing/create" class="btn-primary"
                         >+ New Listing</Link
                     >
+                    <Link href="/logout" class="btn-primary">Logout</Link>
+                </div>
+                <div v-else>
+                    <Link href="/login" class="btn-primary">Login</Link>
                 </div>
             </nav>
         </div>
     </header>
 
-    <main class="container mx-auto p-4">
+    <main class="container mx-auto p-4 w-full">
         <div
             v-if="flashSuccess"
             class="mb-4 border rounded-md shadow-sm border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900 p-2"
@@ -44,4 +51,5 @@ import { Link, usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
 const page = usePage();
 const flashSuccess = computed(() => page.props.flash.success);
+const user = computed(() => page.props.user);
 </script>
