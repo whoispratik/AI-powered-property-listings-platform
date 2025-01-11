@@ -28,7 +28,10 @@
                     >
                     <Link href="/logout" class="btn-primary">Logout</Link>
                 </div>
-                <div v-else>
+                <div v-else class="flex items-center gap-2">
+                    <Link href="/user-account/create" class="btn-primary"
+                        >Register</Link
+                    >
                     <Link href="/login" class="btn-primary">Login</Link>
                 </div>
             </nav>
