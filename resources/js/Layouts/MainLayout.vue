@@ -45,14 +45,35 @@
         >
             {{ flashSuccess }}
         </div>
+        <div
+            v-if="error"
+            class="mb-4 border rounded-md shadow-sm border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900 p-2"
+        >
+            {{ error }}
+        </div>
         <slot>Default</slot>
     </main>
 </template>
 
 <script setup>
 import { Link, usePage } from "@inertiajs/vue3";
-import { computed } from "vue";
+import { computed, watch } from "vue";
 const page = usePage();
 const flashSuccess = computed(() => page.props.flash.success);
+const error = computed(() => page.props.flash.error);
 const user = computed(() => page.props.user);
+watch(error, (value) => {
+    if (value) {
+        setTimeout(() => {
+            page.props.flash.error = null;
+        }, 5000);
+    }
+});
+watch(flashSuccess, (value) => {
+    if (value) {
+        setTimeout(() => {
+            page.props.flash.success = null;
+        }, 5000);
+    }
+});
 </script>

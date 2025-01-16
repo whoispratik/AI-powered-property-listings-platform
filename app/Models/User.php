@@ -44,4 +44,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function listings()  //one to many relationship
+    {
+        return $this->hasMany(Listing::class);
+    }
 }

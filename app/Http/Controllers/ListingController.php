@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Listing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ListingController extends Controller
 {
@@ -36,10 +37,13 @@ class ListingController extends Controller
     public function store(Request $request)
     {
         //
-        Listing::create($request->validate(['beds'=>'required|integer|min:1|max:30|'
-        ,'baths'=>'required|integer|min:1|max:30|',
-        'area'=>'required|integer|min:1|max:10000|','price'=>'required|integer|min:1|max:300000000|','city'=>'required','code'=>'required','street'=>'required','street_nr'=>'required|integer|min:1|max:1000|'
-    ]));
+        $request->user()->listings()->create($request->validate([
+            'beds'=>'required|integer|min:1|max:30|',
+            'baths'=>'required|integer|min:1|max:30|',
+            'area'=>'required|integer|min:1|max:10000|',
+            'price'=>'required|integer|min:1|max:300000000|',
+            'city'=>'required','code'=>'required','street'=>'required','street_nr'=>'required|integer|min:1|max:1000|'
+        ]));
         return redirect()->route('listing.index')->with('success', 'Listing created successfully');
     }
 
@@ -60,13 +64,17 @@ class ListingController extends Controller
      */
     public function edit(Listing $listing)
     {
-             
+         $response=Gate::inspect('update', $listing);
+         if($response->allowed()){  
         return inertia(
             'Listing/Edit',
             [
                 'listing' => $listing
             ]
-        );
+        );}
+        else{
+            return redirect()->back()->with('error', $response->message());
+        }
     }
 
     /**
@@ -74,11 +82,17 @@ class ListingController extends Controller
      */
     public function update(Request $request, Listing $listing)
     {
+        $response=Gate::inspect('update', $listing);
+        if($response->allowed()){
         $listing->update($request->validate(['beds'=>'required|integer|min:1|max:30|'
         ,'baths'=>'required|integer|min:1|max:30|',
         'area'=>'required|integer|min:1|max:10000|','price'=>'required|integer|min:1|max:1000000|','city'=>'required','code'=>'required','street'=>'required','street_nr'=>'required|integer|min:1|max:1000|'
     ]));
         return redirect()->route('listing.index')->with('success', 'Listing updated successfully');
+}
+else{
+    return redirect()->back()->with('error', $response->message());
+}
     }
     
 
@@ -87,7 +101,13 @@ class ListingController extends Controller
      */
     public function destroy(Listing $listing)
     {
+        $response=Gate::inspect('delete', $listing);
+        if($response->allowed()){
         $listing->delete();
         return redirect()->back()->with('success', 'Listing deleted successfully');
+    }
+    else{
+        return redirect()->back()->with('error', $response->message());
+    }
     }
 }
