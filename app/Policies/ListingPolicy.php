@@ -10,6 +10,7 @@ class ListingPolicy
 {
     /**
      * Determine whether the user can view any models.
+     * would  run before this policy methods
      */
     public function before(User $user, string $ability): bool|null
 {
