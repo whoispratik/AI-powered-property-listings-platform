@@ -1,5 +1,5 @@
 <template>
-    <Filter></Filter>
+    <Filter :filters="filters"></Filter>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         <Box
             v-for="(listing, index) in listings.data"
@@ -45,6 +45,10 @@ import Pagniation from "@/Components/UI/Pagniation.vue";
 import Filter from "@/Components/Filter.vue";
 defineProps({
     listings: {
+        type: Object,
+        required: true,
+    },
+    filters: {
         type: Object,
         required: true,
     },

@@ -11,14 +11,23 @@ class ListingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    
+    public function index(Request $request)
     {
-        //
+        
+        $filters=$request->only([ 'priceFrom', 'priceTo', 'beds', 'baths', 'areaFrom', 'areaTo']);
         return inertia(
             'Listing/Index',
             [
-                'listings' => Listing::orderByDesc('created_at')
-                ->paginate(10)
+                'filters'=>$filters,
+                'listings' => Listing::orderByDesc('created_at') //conditionally adding constraints to the query
+                ->when(isset($filters['priceFrom']),fn ($query)=>$query->where('price','>=',$filters['priceFrom']))
+                ->when(isset($filters['priceTo']),fn ($query)=>$query->where('price','<=',$filters['priceTo']))
+                ->when(isset($filters['beds']),fn ($query)=>$query->where('beds',(int)$filters['beds'] < 6 ? '=' : '>=',$filters['beds']))
+                ->when(isset($filters['baths']),fn ($query)=>$query->where('baths',(int)$filters['baths'] < 6 ? '=' : '>=',$filters['baths']))
+                ->when(isset($filters['areaFrom']),fn ($query)=>$query->where('area','>=',$filters['areaFrom']))
+                ->when(isset($filters['areaTo']),fn ($query)=>$query->where('area','<=',$filters['areaTo']))
+                ->paginate(10)->withQueryString()
             ]
         );
     }
