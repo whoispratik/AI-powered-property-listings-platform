@@ -91,7 +91,7 @@ class ListingController extends Controller
         if($response->allowed()){
         $listing->update($request->validate(['beds'=>'required|integer|min:1|max:30|'
         ,'baths'=>'required|integer|min:1|max:30|',
-        'area'=>'required|integer|min:1|max:10000|','price'=>'required|integer|min:1|max:1000000|','city'=>'required','code'=>'required','street'=>'required','street_nr'=>'required|integer|min:1|max:1000|'
+        'area'=>'required|integer|min:1|max:10000|','price'=>'required|integer|min:1|max:1000000000|','city'=>'required','code'=>'required','street'=>'required','street_nr'=>'required|integer|min:1|max:1000|'
     ]));
         return redirect()->route('listing.index')->with('success', 'Listing updated successfully');
 }
@@ -100,19 +100,4 @@ else{
 }
     }
     
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Listing $listing)
-    {
-        $response=Gate::inspect('delete', $listing);
-        if($response->allowed()){
-        $listing->delete();
-        return redirect()->back()->with('success', 'Listing deleted successfully');
-    }
-    else{
-        return redirect()->back()->with('error', $response->message());
-    }
-    }
-}
+} 

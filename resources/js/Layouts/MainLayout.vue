@@ -20,9 +20,9 @@
                     <Link href="/listing">EstateInsight</Link>
                 </div>
                 <div v-if="user" class="flex items-center gap-4">
-                    <div class="text-sm text-gray-500">
+                    <Link class="text-sm text-gray-500" href="/realtor/listing">
                         Welcome {{ user.name }}
-                    </div>
+                    </Link>
                     <Link href="/listing/create" class="btn-primary"
                         >+ New Listing</Link
                     >
