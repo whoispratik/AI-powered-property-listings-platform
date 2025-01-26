@@ -2,7 +2,7 @@
     <h1 class="text-3xl mb-4">Your Listings</h1>
 
     <section>
-        <RealtorFilters />
+        <RealtorFilters :filters="props.filters" />
     </section>
     <section class="grid grid-cols-1 lg:grid-cols-2 gap-2">
         <Box v-for="listing in listings" :key="listing.id">
@@ -45,13 +45,5 @@ import ListingAddress from "@/Components/ListingAddress.vue";
 import RealtorFilters from "./Index/Components/RealtorFilters.vue";
 import { Link } from "@inertiajs/vue3";
 import { reactive, watch } from "vue";
-defineProps({ listings: Array });
-const filterForm = reactive({
-    deleted: false,
-});
-watch(filterForm, (newvalue, oldvalue) => {
-    console.log(
-        `the new value is${newvalue.deleted} and the old value is ${oldvalue.deleted}`
-    );
-});
+const props = defineProps({ listings: Array, filters: Object });
 </script>

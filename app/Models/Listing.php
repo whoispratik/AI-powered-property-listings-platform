@@ -13,6 +13,7 @@ class Listing extends Model
    use HasFactory;
    use SoftDeletes;
    protected $fillable = ['beds','baths','area','city','code','street','street_nr','price'];
+   protected $sortable=['price','created_at'];
    public function user()
    {
        return $this->belongsTo(User::class);
@@ -27,6 +28,8 @@ class Listing extends Model
          ->when(isset($filters['beds']),fn ($query)=>$query->where('beds',(int)$filters['beds'] < 6 ? '=' : '>=',$filters['beds']))
          ->when(isset($filters['baths']),fn ($query)=>$query->where('baths',(int)$filters['baths'] < 6 ? '=' : '>=',$filters['baths']))
          ->when(isset($filters['areaFrom']),fn ($query)=>$query->where('area','>=',$filters['areaFrom']))
-         ->when(isset($filters['areaTo']),fn ($query)=>$query->where('area','<=',$filters['areaTo']));
+         ->when(isset($filters['areaTo']),fn ($query)=>$query->where('area','<=',$filters['areaTo']))
+         ->when(isset($filters['deleted']),fn($query)=>$query->onlyTrashed())
+         ->when(isset($filters['by']),fn($query)=>in_array($filters['by'],$this->sortable)?$query->orderBy($filters['by'],$filters['order']??'desc'):$query );
    }
 }
