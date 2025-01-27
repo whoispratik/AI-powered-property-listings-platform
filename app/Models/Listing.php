@@ -30,6 +30,6 @@ class Listing extends Model
          ->when(isset($filters['areaFrom']),fn ($query)=>$query->where('area','>=',$filters['areaFrom']))
          ->when(isset($filters['areaTo']),fn ($query)=>$query->where('area','<=',$filters['areaTo']))
          ->when(isset($filters['deleted']),fn($query)=>$query->onlyTrashed())
-         ->when(isset($filters['by']),fn($query)=>in_array($filters['by'],$this->sortable)?$query->orderBy($filters['by'],$filters['order']??'desc'):$query );
+         ->when(isset($filters['by']),fn($query)=>in_array($filters['by'],$this->sortable)?$query->orderBy($filters['by'],$filters['order']??'desc'):$query,fn($query)=>$query->orderBy('created_at','desc') );
    }
 }

@@ -22,7 +22,7 @@ class ListingController extends Controller
                 'filters'=>$filters,
                 'listings' => Listing::mostRecent() 
                 ->filter($filters)
-                ->paginate(10)->withQueryString() //withQueryString is used to keep the query string in the pagination links
+                ->paginate(10)->withQueryString() //withQueryString is used to keep the query parameters applied across all pages
             ]
         );
     }
@@ -63,41 +63,6 @@ class ListingController extends Controller
                 'listing' => $listing
             ]
         );
-    }
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Listing $listing)
-    {
-         $response=Gate::inspect('update', $listing);
-         if($response->allowed()){  
-        return inertia(
-            'Listing/Edit',
-            [
-                'listing' => $listing
-            ]
-        );}
-        else{
-            return redirect()->back()->with('error', $response->message());
-        }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Listing $listing)
-    {
-        $response=Gate::inspect('update', $listing);
-        if($response->allowed()){
-        $listing->update($request->validate(['beds'=>'required|integer|min:1|max:30|'
-        ,'baths'=>'required|integer|min:1|max:30|',
-        'area'=>'required|integer|min:1|max:10000|','price'=>'required|integer|min:1|max:1000000000|','city'=>'required','code'=>'required','street'=>'required','street_nr'=>'required|integer|min:1|max:1000|'
-    ]));
-        return redirect()->route('listing.index')->with('success', 'Listing updated successfully');
-}
-else{
-    return redirect()->back()->with('error', $response->message());
-}
     }
     
 } 

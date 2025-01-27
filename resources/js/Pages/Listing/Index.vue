@@ -13,9 +13,6 @@
                     <ListingAddress :listing="listing" class="text-gray-500" />
                 </Link>
             </div>
-            <div>
-                <Link :href="`/listing/${listing.id}/edit`">Edit</Link>
-            </div>
         </Box>
     </div>
     <div

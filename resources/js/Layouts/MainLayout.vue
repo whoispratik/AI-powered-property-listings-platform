@@ -23,7 +23,7 @@
                     <Link class="text-sm text-gray-500" href="/realtor/listing">
                         Welcome {{ user.name }}
                     </Link>
-                    <Link href="/listing/create" class="btn-primary"
+                    <Link href="/realtor/listing/create" class="btn-primary"
                         >+ New Listing</Link
                     >
                     <Link href="/logout" class="btn-primary">Logout</Link>

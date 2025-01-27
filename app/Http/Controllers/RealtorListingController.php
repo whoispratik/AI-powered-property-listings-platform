@@ -23,7 +23,7 @@ class RealtorListingController extends Controller
             'Realtor/Index',
             [
                 'filters'=>$filters,
-                'listings' => $filters['deleted']?  $request->user()->listings()->filter($filters)->get():$request->user()->listings()->filter([ ...$request->only(['by','order'])])->get()
+                'listings' => $filters['deleted']?  $request->user()->listings()->filter($filters)->paginate(5)->withQueryString():$request->user()->listings()->filter([ ...$request->only(['by','order'])])->paginate(5)->withQueryString()
             ]
         );
     }
@@ -34,6 +34,7 @@ class RealtorListingController extends Controller
     public function create()
     {
         //
+        return inertia('Realtor/CreateR');
     }
 
     /**
@@ -42,32 +43,51 @@ class RealtorListingController extends Controller
     public function store(Request $request)
     {
         //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        $request->user()->listings()->create($request->validate([
+            'beds'=>'required|integer|min:1|max:30|',
+            'baths'=>'required|integer|min:1|max:30|',
+            'area'=>'required|integer|min:1|max:10000|',
+            'price'=>'required|integer|min:1|max:300000000|',
+            'city'=>'required','code'=>'required','street'=>'required','street_nr'=>'required|integer|min:1|max:1000|'
+        ]));
+        return redirect()->route('realtor.listing.index')->with('success', 'Listing created successfully');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Listing $listing)
     {
-        //
+         $response=Gate::inspect('update', $listing);
+         if($response->allowed()){  
+        return inertia(
+            'Realtor/Edit',
+            [
+                'listing' => $listing
+            ]
+        );}
+        else{
+            return redirect()->back()->with('error', $response->message());
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Listing $listing)
     {
-        //
+        $response=Gate::inspect('update', $listing);
+        if($response->allowed()){
+        $listing->update($request->validate(['beds'=>'required|integer|min:1|max:30|'
+        ,'baths'=>'required|integer|min:1|max:30|',
+        'area'=>'required|integer|min:1|max:10000|','price'=>'required|integer|min:1|max:1000000000|','city'=>'required','code'=>'required','street'=>'required','street_nr'=>'required|integer|min:1|max:1000|'
+    ]));
+        return redirect()->route('realtor.listing.index')->with('success', 'Listing updated successfully');
+}
+else{
+    return redirect()->back()->with('error', $response->message());
+}
     }
-
     /**
      * Remove the specified resource from storage.
      */
