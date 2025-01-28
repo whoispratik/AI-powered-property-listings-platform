@@ -20,7 +20,7 @@ class AuthController extends Controller
         'email'=>'required|email|string',
         'password'=>'required'
     ]);
-    if(!Auth::attempt($credentials)){
+    if(!Auth::attempt($credentials,$request->boolean('remember'))){
         throw ValidationException::withMessages([
             'email'=>'Authentication failed'    
         ]);

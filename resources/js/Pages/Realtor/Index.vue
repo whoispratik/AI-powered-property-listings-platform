@@ -5,8 +5,11 @@
         <RealtorFilters :filters="props.filters" />
     </section>
     <section class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+        <template v-if="listings.data.length >= 1">
+
+            
         <Box v-for="listing in listings.data" :key="listing.id">
-            <div
+             <div
                 class="flex flex-col md:flex-row gap-2 md:items-center justify-between"
             >
                 <div>
@@ -38,11 +41,32 @@
                         :href="`/realtor/listing/${listing.id}`"
                         method="DELETE"
                         as="button"
+                        v-if="!listing.deleted_at"
                         >Delete</Link
                     >
+                    <Link
+                        class="btn-outline text-xs font-medium"
+                        :href="`/realtor/listing/${listing.id}/restore`"
+                        method="put"
+                        as="button"
+                        v-else
+                        >Restore</Link
+                    >
+
                 </div>
             </div>
         </Box>
+    </template>
+    <template v-else-if="listings.data.length==0 && !filters.deleted">
+            <p class="text-gray-500 dark:text-gray-400 ">
+                You have no current listings :(
+            </p>
+        </template>
+        <template v-else-if="listings.data.length==0 && filters.deleted">       
+                <p class="text-gray-500 dark:text-gray-400">
+                    You have no deleted listings :)
+                </p>
+            </template>
     </section>
     <section
         v-if="listings.data.length"

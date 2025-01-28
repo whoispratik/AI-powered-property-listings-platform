@@ -28,6 +28,16 @@
             <div class="mt-4">
                 <button class="btn-primary w-full" type="submit">Login</button>
             </div>
+            <div class="mt-2">
+                <label class="flex items-center text-sm text-gray-500">
+                    <input
+                        type="checkbox"
+                        v-model="form.remember"
+                        class="mr-2 rounded border-gray-300"
+                    />
+                    Remember Me
+                </label>
+            </div>
             <div class="mt-2 text-center">
                 <Link href="/user-account/create" class="text-sm text-gray-500">
                     Need an account? Click here
@@ -42,6 +52,7 @@ import { useForm, Link } from "@inertiajs/vue3";
 const form = useForm({
     email: null,
     password: null,
+    remember:false
 });
 const login = () => form.post("/login");
 </script>
