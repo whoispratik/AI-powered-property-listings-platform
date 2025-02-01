@@ -69,7 +69,10 @@
                 </div>
             </div>
             <div class="col-span-6">
-                <button type="submit" class="btn-primary">Create</button>
+                <button type="submit" class="btn-primary disabled:opacity-25 disabled:cursor-not-allowed" :disabled="form.processing">
+                    <span v-if="!form.processing">Create</span>
+                    <span v-else>Creating...</span>
+                </button>
             </div>
         </div>
     </form>

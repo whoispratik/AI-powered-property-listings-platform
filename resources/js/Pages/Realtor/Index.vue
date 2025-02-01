@@ -22,6 +22,7 @@
                     </div>
                     <ListingAddress :listing="listing" />
                 </div>
+                <section>
                 <div
                     class="flex items-center gap-1 text-gray-600 dark:text-gray-300"
                 >
@@ -52,8 +53,12 @@
                         v-else
                         >Restore</Link
                     >
-
+                    
                 </div>
+                    <div class="mt-2">
+                        <Link :href="`/realtor/listing/${listing.id}/image/create`" class="block w-full btn-outline text-xs font-medium text-center" as="button">Images</Link>
+                </div>
+            </section>
             </div>
         </Box>
     </template>

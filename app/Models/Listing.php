@@ -18,6 +18,10 @@ class Listing extends Model
    {
        return $this->belongsTo(User::class);
    }
+   public function images()
+   {
+       return $this->hasMany(ListingImage::class);
+   }
    public function scopeMostRecent(Builder $query):Builder{
          return $query->orderByDesc('created_at');
    }
