@@ -21,5 +21,5 @@ Route::get('logout',[AuthController::class,'destroy'])->name('logout');
 Route::prefix('realtor')->name('realtor.')->middleware('auth')->group(function (){
 Route::resource('listing', RealtorListingController::class)->except('show')->middleware('auth')->withTrashed(['edit']);
 Route::put('listing/{listing}/restore',[RealtorListingController::class,'restore'])->name('listing.restore')->withTrashed(); 
-Route::resource('listing.image',RealtorListingImageController::class)->only('create','store');
+Route::resource('listing.image',RealtorListingImageController::class)->only('create','store','destroy');
 });

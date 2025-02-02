@@ -4,6 +4,9 @@
  <form  @submit.prevent="upload"
  >
  <section class="flex items-center gap-2 my-4">
+  <div v-if="Object.keys(form.errors).length" class="input-error">
+                 <span>The file should be an image</span>
+                </div>
     <input type="file" class="border rounded-md file:px-4 file:py-2 border-gray-200 dark:border-gray-700 file:text-gray-700
      file:dark:text-gray-400 file:border-0 file:bg-gray-100 file:dark:bg-gray-800 file:font-medium
       file:hover:bg-gray-200 file:dark:hover:bg-gray-700
@@ -21,8 +24,17 @@
 <Box v-if="listing.images.length" class="mt-4">
     <template #header>Current Listing Images</template>
     <section class="mt-4 grid grid-cols-3 gap-4">
-      <div v-for="image in listing.images" :key="image.id">
+      <div v-for="image in listing.images" :key="image.id" 
+       class="flex flex-col justify-between">
         <img :src="image.src" class="rounded-md" />
+        <Link 
+          :href="`/realtor/listing/${listing.id}/image/${image.id}`"
+          method="delete"
+          as="button"
+          class="mt-2 btn-outline text-xs"
+        >
+          Delete
+        </Link>
       </div>
     </section>
   </Box>
@@ -34,6 +46,7 @@ const prop=defineProps({
 import Box from '@/Components/UI/Box.vue';
 import {useForm} from '@inertiajs/vue3';
 import { ref,computed } from 'vue';
+import {Link} from '@inertiajs/vue3';
 const form=useForm({
     images:[],
 });

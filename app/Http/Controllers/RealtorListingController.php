@@ -23,7 +23,8 @@ class RealtorListingController extends Controller
             'Realtor/Index',
             [
                 'filters'=>$filters,
-                'listings' => $filters['deleted']?  $request->user()->listings()->filter($filters)->paginate(5)->withQueryString():$request->user()->listings()->filter([ ...$request->only(['by','order'])])->paginate(5)->withQueryString()
+                'listings' => $filters['deleted']?  $request->user()->listings()->filter($filters)->withCount('images')
+                ->paginate(5)->withQueryString():$request->user()->listings()->filter([ ...$request->only(['by','order'])])->withCount('images')->paginate(5)->withQueryString()
             ]
         );
     }
