@@ -5,13 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-
 class ListingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    
     public function index(Request $request)
     {
         
@@ -28,13 +26,14 @@ class ListingController extends Controller
     }
 
   
-    public function show(Listing $listing)
+    public function show(Listing $listing,Request $request)
     {
         $listing->load(['images']);
         return inertia(
             'Listing/Show',
             [
-                'listing' => $listing
+                'listing' => $listing,
+                'isOwner'=>$request->user() ? $listing->user->id==$request->user()->id : null,
             ]
         );
     }

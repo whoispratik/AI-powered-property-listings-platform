@@ -9,7 +9,7 @@ use App\Models\Listing;
 class Offer extends Model
 {
     //
-    protected $fillable=['amount','accepted_at','rejected_at'];
+    protected $fillable=['amount','accepted_at','rejected_at','user_id'];
 
     public function listing(): BelongsTo{
         return $this->belongsTo(Listing::class);

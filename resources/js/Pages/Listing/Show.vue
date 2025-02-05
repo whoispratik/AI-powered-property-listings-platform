@@ -54,7 +54,7 @@
                     <div class="flex justify-between">
                         <div>Principal paid</div>
                         <div>
-                            <Price :price="listing.price" class="font-medium" />
+                            <Price :price="thereIsOffer?offer:listing.price" class="font-medium" />
                         </div>
                     </div>
                     <div class="flex justify-between">
@@ -65,6 +65,11 @@
                     </div>
                 </div>
             </Box>
+            <MakeOffer 
+            v-if="!isOwner && user" :listing-id="listing.id" 
+            :price="listing.price"
+            @offer-change="emitHandler"
+            ></MakeOffer>
         </div>
     </div>
 </template>
@@ -75,7 +80,10 @@ import ListingAddress from "@/Components/ListingAddress.vue";
 import Box from "@/Components/UI/Box.vue";
 import ListingSpace from "@/Components/ListingSpace.vue";
 import { useMonthlyPayment } from "@/Composables/useMonthlyPayment";
-import { ref } from "vue";
+import { ref,computed } from "vue";
+import { usePage } from "@inertiajs/vue3";
+import MakeOffer from "./Show/Components/MakeOffer.vue";
+const page = usePage();
 const interest = ref(0.1);
 const duration = ref(3);
 const props = defineProps({
@@ -83,9 +91,17 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    isOwner: Boolean
 });
+const thereIsOffer=ref(false);
+const offer=ref(props.listing.price);
+const user = computed(() => page.props.user);
+function emitHandler(newOffer){
+    offer.value= newOffer;
+    thereIsOffer.value=true;
+}
 const { monthlyPayment, totalInterest, totalPaid } = useMonthlyPayment(
-    props.listing.price,
+    offer,
     interest,
     duration
 );
