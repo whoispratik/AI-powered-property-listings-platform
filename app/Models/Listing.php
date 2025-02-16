@@ -28,6 +28,9 @@ class Listing extends Model
    public function scopeMostRecent(Builder $query):Builder{
          return $query->orderByDesc('created_at');
    }
+   public function scopeNotSold(Builder $query): Builder{
+    return $query->whereNull('sold_at'); 
+   }
    public function scopeFilter(Builder $query, array $filters):Builder{
          return $query
          ->when(isset($filters['priceFrom']),fn ($query)=>$query->where('price','>=',$filters['priceFrom']))

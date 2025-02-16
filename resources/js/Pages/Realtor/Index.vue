@@ -1,6 +1,5 @@
 <template>
     <h1 class="text-3xl mb-4">Your Listings</h1>
-
     <section>
         <RealtorFilters :filters="props.filters" />
     </section>
@@ -12,7 +11,13 @@
              <div
                 class="flex flex-col md:flex-row gap-2 md:items-center justify-between"
             >
-                <div>
+            <div>
+            <div
+            v-if="listing.sold_at != null" 
+            class="text-xs font-bold uppercase border border-dashed p-1 border-green-300 text-green-500 dark:border-green-600 dark:text-green-600 inline-block rounded-md mb-2"
+          >
+            sold
+          </div>
                     <div class="xl:flex items-center gap-2">
                         <Price
                             :price="listing.price"
@@ -58,6 +63,14 @@
                     <div class="mt-2">
                         <Link :href="`/realtor/listing/${listing.id}/image/create`" class="block w-full btn-outline text-xs font-medium text-center" as="button">Images ({{listing.images_count}})</Link>
                 </div>
+                <div class="mt-2">
+            <Link
+              :href="`/realtor/listing/${listing.id}`"
+              class="block w-full btn-outline text-xs font-medium text-center"
+            >
+              Offers ({{ listing.offers_count }})
+            </Link>
+          </div>
             </section>
             </div>
         </Box>

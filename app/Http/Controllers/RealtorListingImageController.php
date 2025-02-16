@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Listing;
 use App\Models\ListingImage;
+use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,10 +12,16 @@ class RealtorListingImageController extends Controller
 {
     //
     public function create(Listing $listing){
-        $listing->load(['images']);
-        return inertia('Realtor/ListingImage/Create',[
-            'listing'=>$listing
-        ]);
+        $response=Gate::inspect('view',$listing);
+        if($response->allowed()){
+            $listing->load(['images']);
+            return inertia('Realtor/ListingImage/Create',[
+                'listing'=>$listing
+            ]);
+        }
+        else{
+            return redirect()->route('realtor.listing.index')->with('error',$response->message());
+        }
     }
     public function store(Request $request,Listing $listing){
         if ($request->hasFile('images')) {

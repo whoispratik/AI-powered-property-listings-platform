@@ -23,12 +23,28 @@ class RealtorListingController extends Controller
             'Realtor/Index',
             [
                 'filters'=>$filters,
-                'listings' => $filters['deleted']?  $request->user()->listings()->filter($filters)->withCount('images')
-                ->paginate(5)->withQueryString():$request->user()->listings()->filter([ ...$request->only(['by','order'])])->withCount('images')->paginate(5)->withQueryString()
+                'listings' => $filters['deleted']?  $request->user()->listings()->filter($filters)->withCount('images')->withCount('offers')
+                ->paginate(5)->withQueryString():$request->user()->listings()->filter([ ...$request->only(['by','order'])])->withCount('images')->withCount('offers')->paginate(5)->withQueryString()
             ]
         );
     }
 
+    public function show(Listing $listing,Request $request)
+    {
+        $response=Gate::inspect('view', $listing);
+        if($response->allowed()){
+            $listing->load(relations: ['offers','offers.user']); //eager load relation as an attibute offers
+            return inertia(
+                'Realtor/Show',
+                [
+                    'listing' => $listing,
+                    ]
+                );
+            }
+        else{
+            return redirect()->route('realtor.listing.index')->with('error',$response->message());
+        }
+    }
     /**
      * Show the form for creating a new resource.
      */

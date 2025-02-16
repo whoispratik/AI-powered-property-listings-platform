@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Listing;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 class ListingController extends Controller
@@ -18,7 +19,8 @@ class ListingController extends Controller
             'Listing/Index',
             [
                 'filters'=>$filters,
-                'listings' => Listing::mostRecent() 
+                'listings' => Listing::mostRecent()
+                ->notSold() 
                 ->filter($filters)
                 ->paginate(10)->withQueryString() //withQueryString is used to keep the query parameters applied across all pages
             ]
@@ -28,12 +30,14 @@ class ListingController extends Controller
   
     public function show(Listing $listing,Request $request)
     {
-        $listing->load(['images']);
+        
+        $listing->load(['images']); //eager load relation as an attibute images
         return inertia(
             'Listing/Show',
             [
                 'listing' => $listing,
                 'isOwner'=>$request->user() ? $listing->user->id==$request->user()->id : null,
+                'offerMadeByMe'=>$request->user() ? $listing->offers()->byMe()->first() : null,
             ]
         );
     }

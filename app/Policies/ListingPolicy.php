@@ -10,7 +10,7 @@ class ListingPolicy
 {
     /**
      * Determine whether the user can view any models.
-     * would  run before this policy methods
+     * would  run before this policy methods , if it returns true no further checks will be done and if
      */
     public function before(User $user, string $ability): bool|null
 {
@@ -28,9 +28,9 @@ class ListingPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Listing $listing):bool
+    public function view(User $user, Listing $listing): Response
     {
-       return true;
+       return $user->id==$listing->user_id?Response::allow('granted'):Response::deny('You arent authorized to perform this');
     }
 
     /**
@@ -72,5 +72,9 @@ class ListingPolicy
     public function forceDelete(User $user, Listing $listing): bool
     {
         return false;
+    }
+    public function forSold(User $user,Listing $listing): Response | bool {
+        // would either return null if it isnt sold and a timestamp if its sold
+        return $listing->sold_at ?  Response::deny('The listing has been sold sorry') : true;
     }
 }

@@ -1,4 +1,11 @@
 <template>
+    <div class="mb-4">
+    <Link 
+      href="/realtor/listing"
+    >
+      ← Go back to Listings
+    </Link>
+  </div>
     <form @submit.prevent="update">
         <div class="grid grid-cols-6 gap-4">
             <div class="col-span-2">
@@ -72,7 +79,7 @@
 </template>
 <script setup>
 import { useForm } from "@inertiajs/vue3";
-
+import {Link} from "@inertiajs/vue3";
 const props = defineProps({
     listing: Object,
 });

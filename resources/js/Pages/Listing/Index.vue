@@ -41,4 +41,20 @@ defineProps({
         required: true,
     },
 });
+/*
+async function pricePredicor(){
+    let data ={
+        description:"i like playing sports"};
+let response = await fetch(' http://127.0.0.1:9000/category_predict', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8'
+  },
+  body: JSON.stringify(data)
+});
+let result = await response.json();
+console.log(result)
+}
+pricePredicor()
+*/
 </script>

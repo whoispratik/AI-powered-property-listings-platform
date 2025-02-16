@@ -65,11 +65,13 @@
                     </div>
                 </div>
             </Box>
+            <!-- issue might persist in conditional rendering so analyze all cases-->
             <MakeOffer 
-            v-if="!isOwner && user" :listing-id="listing.id" 
+            v-if="(!isOwner && user) && !offerMadeByMe" :listing-id="listing.id" 
             :price="listing.price"
             @offer-change="emitHandler"
             ></MakeOffer>
+           <OfferMade v-else-if="offerMadeByMe" :offer="offerMadeByMe"></OfferMade>
         </div>
     </div>
 </template>
@@ -77,12 +79,14 @@
 <script setup>
 import Price from "@/Components/Price.vue";
 import ListingAddress from "@/Components/ListingAddress.vue";
+
 import Box from "@/Components/UI/Box.vue";
 import ListingSpace from "@/Components/ListingSpace.vue";
 import { useMonthlyPayment } from "@/Composables/useMonthlyPayment";
 import { ref,computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import MakeOffer from "./Show/Components/MakeOffer.vue";
+import OfferMade from "./Show/Components/OfferMade.vue";
 const page = usePage();
 const interest = ref(0.1);
 const duration = ref(3);
@@ -91,10 +95,11 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    isOwner: Boolean
+    isOwner: Boolean,
+    offerMadeByMe: [ Object, null],
 });
-const thereIsOffer=ref(false);
-const offer=ref(props.listing.price);
+const thereIsOffer = ref(false);
+const offer = ref(props.listing.price);
 const user = computed(() => page.props.user);
 function emitHandler(newOffer){
     offer.value= newOffer;

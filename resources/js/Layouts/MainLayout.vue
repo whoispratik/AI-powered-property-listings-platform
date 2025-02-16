@@ -17,7 +17,7 @@
                 <div
                     class="text-xl text-fuchsia-600 dark:text-fuchsia-300 font-bold text-center"
                 >
-                    <Link href="/listing">EstateInsight</Link>
+                    <Link href="/">EstateInsight</Link>
                 </div>
                 <div v-if="user" class="flex items-center gap-4">
                     <Link class="text-sm text-gray-500" href="/realtor/listing">
@@ -68,7 +68,8 @@ watch(error, (value) => {
             page.props.flash.error = null;
         }, 5000);
     }
-});
+},
+{ immediate: true });
 watch(flashSuccess, (value) => {
     if (value) {
         setTimeout(() => {
