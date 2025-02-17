@@ -5,6 +5,8 @@ use App\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ListingOfferController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\NotificationMarkController;
 use App\Http\Controllers\RealtorListingAcceptController;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\RealtorListingController;
@@ -21,6 +23,7 @@ Route::resource('listing', ListingController::class)->only('index','show');
 //user registration resourceful routes 
 Route::resource('user-account', UserAccountController::class)->only(['create','store']);
 
+
  //authenticating routes
  Route::get('login',[AuthController::class,'create'])->name('login');
  Route::post('login',[AuthController::class,'store'])->name('login.store');
@@ -35,4 +38,7 @@ Route::resource('listing', RealtorListingController::class)->withTrashed();
 Route::put('listing/{listing}/restore',[RealtorListingController::class,'restore'])->name('listing.restore')->withTrashed(); 
 Route::put('/offer/{offer}/accept',RealtorListingAcceptController::class)->name('offer.accept');
 Route::resource('listing.image',RealtorListingImageController::class)->only('create','store','destroy');
+// route for rendering list of notifications
+Route::resource('notification',NotificationController::class)->only(['index']);
+Route::put('/notification/{notification}',NotificationMarkController::class)->name('notification.mark'); // when you are scaling add a policy inside the invoke method too
 });

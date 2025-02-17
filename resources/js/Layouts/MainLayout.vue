@@ -20,6 +20,12 @@
                     <Link href="/">EstateInsight</Link>
                 </div>
                 <div v-if="user" class="flex items-center gap-4">
+                    <Link class="text-gray-500 relative pr-2 py-2 text-lg" href="/realtor/notification">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+            <div v-if="notificationCount" class="absolute right-0 top-0 w-5 h-5 bg-red-700 dark:bg-red-400 text-white font-medium border border-white dark:border-gray-900 rounded-full text-xs text-center">
+              {{ notificationCount }}
+            </div>
+        </Link>
                     <Link class="text-sm text-gray-500" href="/realtor/listing">
                         Welcome {{ user.name }}
                     </Link>
@@ -62,6 +68,9 @@ const page = usePage();
 const flashSuccess = computed(() => page.props.flash.success);
 const error = computed(() => page.props.flash.error);
 const user = computed(() => page.props.user);
+const notificationCount = computed(
+  () => Math.min(page.props.user.notificationCount, 9),
+)
 watch(error, (value) => {
     if (value) {
         setTimeout(() => {

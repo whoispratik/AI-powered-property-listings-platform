@@ -65,7 +65,11 @@ class RealtorListingController extends Controller
             'baths'=>'required|integer|min:1|max:30|',
             'area'=>'required|integer|min:1|max:10000|',
             'price'=>'required|integer|min:1|max:300000000|',
-            'city'=>'required','code'=>'required','street'=>'required','street_nr'=>'required|integer|min:1|max:1000|'
+            'city'=>'required|string',
+            'unit'=>'required|string',
+            'parking'=>'required',
+            'facing'=>'required|string',
+            'road_access'=>'required',
         ]));
         return redirect()->route('realtor.listing.index')->with('success', 'Listing created successfully');
     }

@@ -4,7 +4,8 @@
         <span class="text-gray-400">| </span>
         <span class="font-bold">{{ listing.baths }}</span> baths
         <span class="text-gray-400">| </span>
-        <span class="font-bold">{{ listing.area }}</span> m²
+        <span class="font-bold">{{ listing.area }} </span> 
+        <span class="text-gray-400">{{ listing.unit }}</span>
     </div>
 </template>
 <script setup>

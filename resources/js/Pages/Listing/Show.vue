@@ -17,6 +17,17 @@
                 <ListingAddress :listing="listing" class="text-gray-500" />
             </Box>
             <Box>
+                <template #header>Additional Information</template>
+                    <span class="font-bold">Parking: </span>
+                    <span class="text-gray-400">{{ listing.parking ? 'Yes' : 'No' }}</span>
+                    &nbsp;
+                    <span class="font-bold">Facing: </span>
+                    <span class="text-gray-400">{{ listing.facing }}</span>
+                    &nbsp;
+                    <span class="font-bold">Road Access: </span>
+                    <span class="text-gray-400">{{ listing.road_access ? 'Yes' : 'No' }}</span>
+            </Box>
+            <Box>
                 <template #header> Monthly Payment </template>
                 <div>
                     <label class="label"

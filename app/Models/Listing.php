@@ -12,7 +12,7 @@ class Listing extends Model
     //
    use HasFactory;
    use SoftDeletes;
-   protected $fillable = ['beds','baths','area','city','code','street','street_nr','price'];
+   protected $fillable = ['beds','baths','area','city','price','unit','parking','facing','road_access'];
    protected $sortable=['price','created_at'];
    public function user()
    {

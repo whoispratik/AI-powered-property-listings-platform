@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Listing;
+use App\Notifications\OfferMade;
 use Gate;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,8 @@ class ListingOfferController extends Controller
                 'amount' => 'required|integer|min:1',
             ]);
             $data['user_id']=$request->user()->id;
-            $listing->offers()->create($data);
+            $offer=$listing->offers()->create($data);
+            $listing->user->notify(new OfferMade($offer));
             return redirect()->back()->with('success','Offer successfully made');
         }
         else{

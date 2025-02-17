@@ -8,14 +8,14 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OfferMade extends Notification
+class OfferRejected extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(private Offer $offer)
+    public function __construct(Private Offer $offer)
     {
         //
     }
@@ -49,11 +49,8 @@ class OfferMade extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            // it will be parsed as json to notifications table data column
-            'offer_id' => $this->offer->id,
-            'listing_id' => $this->offer->listing_id,
-            'amount' => $this->offer->amount,
-            'bidder_id' => $this->offer->user_id
+            //
+            'listing_id'=>$this->offer->listing_id
         ];
     }
 }
