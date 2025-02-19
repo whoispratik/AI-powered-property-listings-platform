@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AIController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,10 @@ Route::resource('listing', ListingController::class)->only('index','show');
 //user registration resourceful routes 
 Route::resource('user-account', UserAccountController::class)->only(['create','store']);
 
+// routes for ai tools
+Route::get('/ai',[AIController::class,'index']);
+Route::get('/ai/propertyvaluation',[AIController::class,'propertyValuation']);
+Route::get('ai/metrics',[AIController::class,'metrics']);
 
  //authenticating routes
  Route::get('login',[AuthController::class,'create'])->name('login');
